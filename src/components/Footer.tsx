@@ -10,7 +10,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-3 sm:gap-4">
             <a 
-              href="https://github.com/mniewczas" 
+              href="https://github.com/niewczasm" 
               className="text-muted-foreground hover:text-foreground transition-colors p-2 sm:p-0" 
               aria-label="GitHub"
             >

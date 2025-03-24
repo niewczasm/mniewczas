@@ -13,6 +13,6 @@ export function getDailyMovie(movies: Movie[]): Movie {
   }
 
   // Używamy seeda do wylosowania filmu
-  const index = Math.abs(seed+11) % movies.length;
+  const index = Math.abs(seed) % movies.length;
   return movies[index];
 } 

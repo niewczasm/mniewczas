@@ -15,7 +15,7 @@ export default function FilmozercaLayout({
               href="/" 
               className="text-foreground hover:text-muted-foreground transition-colors"
             >
-              ← Wróć do portfolio
+              ← Sprawdź inne rzeczy
             </a>
             <ThemeToggle />
           </div>
