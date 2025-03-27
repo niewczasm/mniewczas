@@ -1,21 +1,16 @@
 'use client';
 
 import * as React from "react";
-import { Film, Timer, Star, Users, Video, Pen, User, HelpCircle, ArrowUp, ArrowDown, ArrowRightLeft, Share2, Check, Copy, Facebook } from "lucide-react";
+import { Film, Timer, Star, Users, Video, Pen, User, HelpCircle, ArrowUp, ArrowDown, ArrowRightLeft, Share2, Check, Facebook } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Movie, Person } from "@/types/database";
 import MoviePoster from "@/components/MoviePoster";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 
 interface HintCardProps {
-  dailyMovie: Movie & {
+  dailyMovie: Omit<Movie, 'directors' | 'writers' | 'actors'> & {
     directors: Person[];
     writers: Person[];
     actors: Person[];
@@ -49,18 +44,6 @@ const XIcon = () => (
 
 export function HintCard({ dailyMovie, lastGuess, hints, attempts, guessHistory }: HintCardProps) {
   const [copied, setCopied] = React.useState(false);
-  const getComparisonIcon = (guessValue: number, dailyValue: number) => {
-    if (guessValue === dailyValue) return <Check className="w-4 h-4 text-green-500" />;
-    if (guessValue < dailyValue) return <ArrowUp className="w-4 h-4 text-blue-500" />;
-    return <ArrowDown className="w-4 h-4 text-blue-500" />;
-  };
-
-  const getGenreMatch = (guessGenres: string, dailyGenres: string) => {
-    const guess = guessGenres.split(',').map(g => g.trim());
-    const daily = dailyGenres.split(',').map(g => g.trim());
-    const common = guess.filter(g => daily.includes(g));
-    return common.length > 0 ? common.join(', ') : 'Brak wspólnych';
-  };
 
   const getBackgroundClass = (isExactMatch: boolean) => {
     return isExactMatch 
@@ -138,50 +121,10 @@ export function HintCard({ dailyMovie, lastGuess, hints, attempts, guessHistory 
     );
   };
 
-  // Funkcja pomocnicza do formatowania listy nazwisk
-  const formatNames = (discovered: Set<string>, people: Person[]) => {
-    const discoveredPeople = people
-      .filter(p => discovered.has(p.nconst))
-      .map(p => p.primaryName);
-
-    if (discoveredPeople.length === 0) {
-      return <span className="text-muted-foreground text-sm">Nie odkryto</span>;
-    }
-
-    return (
-      <div className="flex flex-col items-end gap-0.5">
-        {discoveredPeople.map((name, index) => (
-          <span key={index} className="text-sm">
-            {name}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
   const isGuessed = hints.year?.tconst === dailyMovie.tconst;
   const movieTitle = isGuessed 
     ? (dailyMovie.polish_title || dailyMovie.original_title)
     : "Dzisiejszy film";
-
-  const isValueInRange = (value1: number, value2: number | null, target: number) => {
-    if (value2 === null) return false;
-    const min = Math.min(value1, value2);
-    const max = Math.max(value1, value2);
-    
-    if (target >= min && target <= max) {
-      // Dla liczb całkowitych (rok, długość)
-      if (Number.isInteger(min) && Number.isInteger(max) && Number.isInteger(target)) {
-        return max - min === 2 && target === min + 1;
-      }
-      // Dla oceny
-      const minRounded = Math.round(min * 10);
-      const maxRounded = Math.round(max * 10);
-      const targetRounded = Math.round(target * 10);
-      return maxRounded - minRounded === 2 && targetRounded === minRounded + 1;
-    }
-    return false;
-  };
 
   // Funkcja pomocnicza do formatowania czasu
   const formatDuration = (minutes: number) => {
@@ -358,7 +301,7 @@ export function HintCard({ dailyMovie, lastGuess, hints, attempts, guessHistory 
                 </div>
 
                 {/* Ocena */}
-                <div className={`flex flex-col p-2 rounded-lg ${getBackgroundClass(Math.round(hints.rating?.average_rating * 10) === Math.round(dailyMovie.average_rating * 10))}`}>
+                <div className={`flex flex-col p-2 rounded-lg ${getBackgroundClass(hints.rating ? Math.round(hints.rating.average_rating * 10) === Math.round(dailyMovie.average_rating * 10) : false)}`}>
                   <div className="flex items-center gap-1 mb-1 whitespace-nowrap">
                     <Star className="w-3 h-3" />
                     <span className="text-xs">Ocena</span>

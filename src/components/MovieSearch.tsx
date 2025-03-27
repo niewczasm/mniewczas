@@ -1,18 +1,15 @@
 'use client';
 
 import * as React from "react";
-import { Movie } from "@/types/database";
-import { Card, CardContent } from "@/components/ui/card";
+import { Movie, Person } from "@/types/database";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { compareMovies } from "@/lib/movie-hints";
 import { HintCard } from "@/components/HintCard";
-import { useState } from "react";
 import MoviePoster from "@/components/MoviePoster";
 
 interface MovieSearchProps {
   movies: Movie[];
-  dailyMovie: Movie & {
+  dailyMovie: Omit<Movie, 'directors' | 'writers' | 'actors'> & {
     directors: Person[];
     writers: Person[];
     actors: Person[];
@@ -216,16 +213,16 @@ export function MovieSearch({ movies, dailyMovie }: MovieSearchProps) {
         newHints.actors = new Set(dailyMovie.actors.map(a => a.nconst));
         
         newHints.year = movie;
-        newHints.previousYear = null;
+        newHints.previousYear = undefined;
         
         newHints.duration = movie;
-        newHints.previousDuration = null;
+        newHints.previousDuration = undefined;
         
         newHints.rating = movie;
-        newHints.previousRating = null;
+        newHints.previousRating = undefined;
         
         newHints.votes = movie;
-        newHints.previousVotes = null;
+        newHints.previousVotes = undefined;
         
         return newHints;
       }
@@ -326,17 +323,23 @@ export function MovieSearch({ movies, dailyMovie }: MovieSearchProps) {
       // Aktualizacja wspólnych twórców
       newHints.directors = new Set([
         ...prev.directors,
-        ...movie.directors.filter(d => dailyMovie.directors.map(dp => dp.nconst).includes(d))
+        ...movie.directors.filter(nconst => 
+          dailyMovie.directors.map(d => d.nconst).includes(nconst)
+        )
       ]);
 
       newHints.writers = new Set([
         ...prev.writers,
-        ...movie.writers.filter(w => dailyMovie.writers.map(wp => wp.nconst).includes(w))
+        ...movie.writers.filter(nconst => 
+          dailyMovie.writers.map(w => w.nconst).includes(nconst)
+        )
       ]);
 
       newHints.actors = new Set([
         ...prev.actors,
-        ...movie.actors.filter(a => dailyMovie.actors.map(ap => ap.nconst).includes(a))
+        ...movie.actors.filter(nconst => 
+          dailyMovie.actors.map(a => a.nconst).includes(nconst)
+        )
       ]);
 
       return newHints;

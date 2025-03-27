@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ProjectCardProps {
   title: string;
@@ -31,7 +32,7 @@ export default function ProjectCard({
     <div onClick={() => router.push(demoUrl)} className="cursor-pointer">
       <Card className="overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg flex flex-col h-full">
         <div className="relative h-40 sm:h-48 overflow-hidden">
-          <img 
+          <Image 
             src={image} 
             alt={`${title} preview`} 
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105" 

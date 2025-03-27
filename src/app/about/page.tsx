@@ -3,6 +3,7 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 const biography = [
   "Urodziłem się w 1996 roku w Radomiu, mieście, które nieustannie balansuje między industrialnym dziedzictwem a nowoczesnością 🏙️⚙️. Moja ścieżka życiowa od początku wydawała się być wyznaczona przez precyzję i dbałość o detale 🎯📐 – cechy charakterystyczne dla mojego znaku zodiaku, Panny ♍. Czy to przypadek, że od zawsze fascynowała mnie struktura, porządek i skrupulatność? Trudno powiedzieć, ale jedno jest pewne – technologia stała się dla mnie nie tylko pasją, ale i sposobem na życie 🌍🔧.",
@@ -45,12 +46,12 @@ export default function AboutPage() {
       <nav className="border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <a 
+            <Link 
               href="/" 
               className="text-foreground hover:text-muted-foreground transition-colors"
             >
               ← Strona główna
-            </a>
+            </Link>
             <ThemeToggle />
           </div>
         </div>

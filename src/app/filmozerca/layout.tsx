@@ -1,5 +1,6 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 
 export default function FilmozercaLayout({
   children,
@@ -11,12 +12,12 @@ export default function FilmozercaLayout({
       <nav className="border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <a 
+            <Link 
               href="/" 
               className="text-foreground hover:text-muted-foreground transition-colors"
             >
               ← Sprawdź inne rzeczy
-            </a>
+            </Link>
             <ThemeToggle />
           </div>
         </div>

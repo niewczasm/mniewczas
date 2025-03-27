@@ -9,7 +9,7 @@ export default async function Filmozerca() {
   const dailyMovie = getDailyMovie(movies);
   
   // Pobieramy dane o osobach dla dziennego filmu
-  const dailyMovieWithPeople = await getMoviePeople(dailyMovie);
+  const { movie: dailyMovieWithPeople, directors, writers, actors } = await getMoviePeople(dailyMovie);
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -36,7 +36,7 @@ export default async function Filmozerca() {
           <div className="flex justify-center">
             <MovieSearch 
               movies={movies} 
-              dailyMovie={dailyMovieWithPeople}
+              dailyMovie={{ ...dailyMovieWithPeople, directors, writers, actors }}
             />
           </div>
         </div>
